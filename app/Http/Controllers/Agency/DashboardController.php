@@ -7,16 +7,18 @@ use App\Models\CustomerProductPriceTax;
 use App\Models\FlightBooking;
 use Illuminate\Http\Request;
 
+
 class DashboardController extends Controller
 {
     protected $user;
-    public function index() {
+    public function index()
+    {
 
         $this->user = auth()->user();
-        
-        $data = FlightBooking::whereHas('productBooking', function($query){
+
+        $data = FlightBooking::whereHas('productBooking', function ($query) {
             $query->where('user_id', $this->user->id);
-        })->where('agency_id',$this->user->agency_id)->with([
+        })->where('agency_id', $this->user->agency_id)->with([
             'productBooking',
             'productBooking.product',
             'productBooking.product.flightTicketWithTrashed',
@@ -29,7 +31,8 @@ class DashboardController extends Controller
         return view('agency.dashboard.index', compact('data'));
     }
 
-    public function sendTicket(Request $request, $flightBookingId) {
+    public function sendTicket(Request $request, $flightBookingId)
+    {
 
         $this->user = auth()->user();
         $agency = $request->agency;
@@ -48,7 +51,8 @@ class DashboardController extends Controller
         return view('agency.dashboard.send-ticket', compact('agency', 'customer', 'agencyCustomer', 'airline', 'flightTicket', 'fromAirport', 'toAirport', 'flightBooking', 'productPrice'));
     }
 
-    public function updateMarkUp(Request $request) {
+    public function updateMarkUp(Request $request)
+    {
 
         $this->user = auth()->user();
         $agency = $request->agency;
@@ -59,6 +63,6 @@ class DashboardController extends Controller
         $customerProductPriceTax = CustomerProductPriceTax::firstOrCreate(['agency_id' => $agency->id, 'customer_id' => $customer->id, 'product_price_id' => $data['pk'], 'tax' => 'airline_fee_tax']);
         $customerProductPriceTax->amount = $data['value'];
         $customerProductPriceTax->save();
-        return response()->json(['success'=>true, 'markup' => $data['value']], 201);
+        return response()->json(['success' => true, 'markup' => $data['value']], 201);
     }
 }
