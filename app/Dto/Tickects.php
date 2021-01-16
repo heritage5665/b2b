@@ -31,7 +31,7 @@ class Tickets extends DataTransferObject
             'agency' => $request->input('agency'),
             'key' => $request->input('key'),
             'firstname' => $request->input('firstname'),
-            'amounnt' => $request->input('amounnt'),
+            'amounnt' => $request->input('amount'),
             'txnid' => $request->input('txnid'),
             'postedHash' => $request->input('hash'),
             'productInfo' => $request->input("productinfo"),
