@@ -74,7 +74,9 @@ if (2 == $user->agency->id) {
                         </div>
                         <div class="col-lg-9 card card-table-one ticket">
                             <div class="row ticket_heading">
-
+                                <div class="col-lg-6">
+                                    <img src="/admin/img/customer_logos/{{$customer->logo}}" alt="" class="img-fluid blur-up lazyload" />
+                                </div>
                                 <div class="col-lg-6">
                                     {{$agencyCustomer->customer_name}}<br>
                                     {{$agencyCustomer->email}}<br>
@@ -166,20 +168,20 @@ if (2 == $user->agency->id) {
                             </div>
                             <div class="row">
                                 <div class="col-lg-2">
-                                    {{$flightTicket->airline_code}} <br /> {{$airline->name}}
+                                    {{$flightTicket->airline_code}} <br /> {{$flightTicket->airline->name}}
                                 </div>
                                 <div class="col-lg-2">
                                     Non Refundable
                                 </div>
                                 <div class="col-lg-3">
                                     {{date('D, M, d H:i', strtotime($flightTicket->departure_date_time))}}<br />
-                                    {{$fromAirport->cityName}},<br />
-                                    {{$fromAirport->name}}
+                                    {{$flightTicket->flightTicketsDestination->fromAirport->cityName}},<br />
+                                    {{ $flightTicket->flightTicketsDestination->fromAirport->name}}
                                 </div>
                                 <div class="col-lg-3">
                                     {{date('D, M, d H:i', strtotime($flightTicket->arrival_date_time))}}<br />
-                                    {{$toAirport->cityName}},<br />
-                                    {{$toAirport->name}}
+                                    {{$flightTicket->flightTicketsDestination->toAirport->cityName}},<br />
+                                    {{ $flightTicket->flightTicketsDestination->toAirport->name}}
                                 </div>
                                 <div class="col-lg-2">
                                     <?php
@@ -223,7 +225,7 @@ if (2 == $user->agency->id) {
                                     {{$agencyCustomer->passenger_first_name[$key]}} {{$agencyCustomer->passenger_last_name[$key]}}
                                 </div>
                                 <div class="col-lg-3">
-                                    {{$flightBooking->pnr}}
+                                    {{$payment->productBooking->flightBooking->pnr}}
                                 </div>
                                 <div class="col-lg-3">
                                     15 Kg | 7 Kg

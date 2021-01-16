@@ -186,22 +186,16 @@ class FlightTicketsController extends Controller
         $agency = $request->agency;
 
         $query = $request->query();
+        $customer = Auth::user()->customer;
 
         $payment = Payment::find($paymentId);
         $product = $payment->productBooking->product;
-        $flightBooking = $payment->productBooking->flightBooking;
-        $productBooking = $flightBooking->productBooking;
-        $flightTicket = $productBooking->product->flightTicketWithTrashed;
-        $airline = $flightTicket->airline;
-        $flightTicketDestination = $flightTicket->flightTicketsDestination;
-        $fromAirport = $flightTicketDestination->fromAirport;
-        $toAirport = $flightTicketDestination->toAirport;
-        $productPrice = $flightBooking->getAgencyPrice();
-        $agencyCustomer = json_decode($productBooking->details);
-
         if (!$product->flightTicket || $product->flightTicket->number_of_tickets <= $product->flightTicket->number_of_sold_tickets) {
             abort(402, 'All tickets are sold.');
         }
+        $flightTicket = $product->flightTicketWithTrashed;
+
+        $agencyCustomer = json_decode($payment->productBooking->details);
 
         $user = $payment->productBooking->user;
 
@@ -211,6 +205,6 @@ class FlightTicketsController extends Controller
 
         $post = json_decode($payment->productBooking->details, true);
 
-        return view('flight-tickets.confirm-booking', compact('post', 'agency',  'agencyCustomer', 'airline', 'flightTicket', 'fromAirport', 'toAirport', 'flightBooking', 'productPrice', 'productInfo', 'query', 'product', 'agency', 'user', 'payment', 'flightTicketId'));
+        return view('flight-tickets.confirm-booking', compact('post', 'customer', 'agency',  'agencyCustomer',  'flightTicket', 'productInfo', 'query', 'product', 'agency', 'user', 'payment', 'flightTicketId'));
     }
 }
