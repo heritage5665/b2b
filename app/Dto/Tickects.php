@@ -13,7 +13,7 @@ class Tickets extends DataTransferObject
 
     public string $status;
     public string $firstname;
-    public float $amount;
+    // public ?float $amount;
     public string $txnid;
     public Agency  $agency;
     public string $postedHash;
@@ -31,20 +31,20 @@ class Tickets extends DataTransferObject
             'agency' => $request->input('agency'),
             'key' => $request->input('key'),
             'firstname' => $request->input('firstname'),
-            'amounnt' => $request->input('amount'),
+            // 'amounnt' => (float)$request->input('amount'),
             'txnid' => $request->input('txnid'),
             'postedHash' => $request->input('hash'),
             'productInfo' => $request->input("productinfo"),
-            'paymentId' => $request->input('udf1'),
-            'userId' => $request->input('udf2'),
-            'paymentAmount' => $request->input('udf3'),
+            'paymentId' => (int)$request->input('udf1'),
+            'userId' => (int)$request->input('udf2'),
+            'paymentAmount' => (float)$request->input('udf3'),
         ]);
     }
 
     public function getHashSeq($email)
     {
         $salt = $this->agency->payu_merchant_salt;
-        //$salt . '|' . $ticket->status . '||||||||' . $ticket->paymentAmount . '|' . $ticket->userId . '|' . $paymentId . '|' . $email . '|' . $firstname . '|' . $productinfo . '|' . $amount . '|' . $txnid . '|' . $key;
+
         $hash = $salt . '|' . $this->status . '||||||||' . $this->paymentAmount . '|' . $this->userId . '|' . $this->paymentId . '|' . $email . '|' . $this->firstname . '|' . $this->productinfo . '|' . $this->amount . '|' . $this->txnid . '|' . $this->key;
         return $hash;
     }

@@ -14,14 +14,14 @@ use App\Models\FlightBooking;
 
 class BookingsController extends Controller
 {
-    public function success(Request $request)
+    public function success(Request $request, BookingService $service)
     {
         $ticket = Tickets::fromRequest($request);
         $user = User::find($ticket->userId);
         if (!$ticket->identifyHash($user->email)) {
             return view('bookings.fail');
         }
-        $data = (new BookingService)->handle($ticket);
+        $data = $service->handle($ticket);
         $payment = $data['payment'];
 
 
